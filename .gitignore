@@ -46,4 +46,3 @@ node_modules/**/*
 # TS
 tsconfig.tsbuildinfo
 node_modules
-dist
