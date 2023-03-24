@@ -1,3 +1,4 @@
+// @ts-nocheck
 // EventSource.js
 // Original implementation from
 // https://github.com/remy/polyfills/blob/master/EventSource.js
@@ -6,15 +7,15 @@
 
 var reTrim = /^(\s|\u00A0)+|(\s|\u00A0)+$/g;
 
-var EventSource = function(url, options) {
+var EventSource = function (url, options) {
   var eventsource = this,
     interval = 500, // polling interval
     lastEventId = null,
     lastIndexProcessed = 0,
     eventType;
 
-  if (!url || typeof url != 'string') {
-    throw new SyntaxError('Not enough arguments');
+  if (!url || typeof url != "string") {
+    throw new SyntaxError("Not enough arguments");
   }
 
   this.URL = url;
@@ -24,7 +25,7 @@ var EventSource = function(url, options) {
   this._xhr = null;
 
   function pollAgain(interval) {
-    eventsource._pollTimer = setTimeout(function() {
+    eventsource._pollTimer = setTimeout(function () {
       poll.call(eventsource);
     }, interval);
   }
@@ -36,20 +37,20 @@ var EventSource = function(url, options) {
 
       // NOTE: IE7 and upwards support
       var xhr = new XMLHttpRequest();
-      xhr.open(eventsource.OPTIONS.method || 'GET', eventsource.URL, true);
+      xhr.open(eventsource.OPTIONS.method || "GET", eventsource.URL, true);
       if (eventsource.OPTIONS && eventsource.OPTIONS.headers) {
-        Object.keys(eventsource.OPTIONS.headers).forEach(key => {
+        Object.keys(eventsource.OPTIONS.headers).forEach((key) => {
           xhr.setRequestHeader(key, eventsource.OPTIONS.headers[key]);
         });
       }
-      xhr.setRequestHeader('Accept', 'text/event-stream');
-      xhr.setRequestHeader('Cache-Control', 'no-cache');
+      xhr.setRequestHeader("Accept", "text/event-stream");
+      xhr.setRequestHeader("Cache-Control", "no-cache");
       // we must make use of this on the server side if we're working with Android - because they don't trigger
       // readychange until the server connection is closed
-      xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+      xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
 
       if (lastEventId != null)
-        xhr.setRequestHeader('Last-Event-ID', lastEventId);
+        xhr.setRequestHeader("Last-Event-ID", lastEventId);
       lastIndexProcessed = 0;
 
       xhr.timeout =
@@ -57,7 +58,7 @@ var EventSource = function(url, options) {
           ? this.OPTIONS.timeout
           : 50000;
 
-      xhr.onreadystatechange = function() {
+      xhr.onreadystatechange = function () {
         if (
           this.readyState == 3 ||
           (this.readyState == 4 && this.status == 200)
@@ -65,47 +66,47 @@ var EventSource = function(url, options) {
           // on success
           if (eventsource.readyState == eventsource.CONNECTING) {
             eventsource.readyState = eventsource.OPEN;
-            eventsource.dispatchEvent('open', { type: 'open' });
+            eventsource.dispatchEvent("open", { type: "open" });
           }
 
-          var responseText = '';
+          var responseText = "";
           try {
-            responseText = this.responseText || '';
+            responseText = this.responseText || "";
           } catch (e) {}
 
           // process this.responseText
-          var parts = responseText.substr(lastIndexProcessed).split('\n'),
+          var parts = responseText.substr(lastIndexProcessed).split("\n"),
             data = [],
             i = 0,
             retry = 0,
-            line = '';
-          lastIndexProcessed = responseText.lastIndexOf('\n\n') + 2;
+            line = "";
+          lastIndexProcessed = responseText.lastIndexOf("\n\n") + 2;
 
           // TODO handle 'event' (for buffer name), retry
           for (; i < parts.length; i++) {
-            line = parts[i].replace(reTrim, '');
-            if (line.indexOf('event') == 0) {
-              eventType = line.replace(/event:?\s*/, '');
-            } else if (line.indexOf('retry') == 0) {
-              retry = parseInt(line.replace(/retry:?\s*/, ''));
+            line = parts[i].replace(reTrim, "");
+            if (line.indexOf("event") == 0) {
+              eventType = line.replace(/event:?\s*/, "");
+            } else if (line.indexOf("retry") == 0) {
+              retry = parseInt(line.replace(/retry:?\s*/, ""));
               if (!isNaN(retry)) {
                 interval = retry;
               }
-            } else if (line.indexOf('data') == 0) {
-              data.push(line.replace(/data:?\s*/, ''));
-            } else if (line.indexOf('id:') == 0) {
-              lastEventId = line.replace(/id:?\s*/, '');
-            } else if (line.indexOf('id') == 0) {
+            } else if (line.indexOf("data") == 0) {
+              data.push(line.replace(/data:?\s*/, ""));
+            } else if (line.indexOf("id:") == 0) {
+              lastEventId = line.replace(/id:?\s*/, "");
+            } else if (line.indexOf("id") == 0) {
               // this resets the id
               lastEventId = null;
-            } else if (line == '') {
+            } else if (line == "") {
               if (data.length) {
                 var event = new MessageEvent(
-                  data.join('\n'),
+                  data.join("\n"),
                   eventsource.url,
-                  lastEventId,
+                  lastEventId
                 );
-                eventsource.dispatchEvent(eventType || 'message', event);
+                eventsource.dispatchEvent(eventType || "message", event);
                 data = [];
                 eventType = undefined;
               }
@@ -126,12 +127,12 @@ var EventSource = function(url, options) {
         }
       };
 
-      xhr.onerror = function(e) {
+      xhr.onerror = function (e) {
         // dispatch error
         eventsource.readyState = eventsource.CONNECTING;
 
-        eventsource.dispatchEvent('error', {
-          type: 'error',
+        eventsource.dispatchEvent("error", {
+          type: "error",
           message: this.responseText,
         });
       };
@@ -143,7 +144,7 @@ var EventSource = function(url, options) {
       }
 
       if (xhr.timeout > 0) {
-        setTimeout(function() {
+        setTimeout(function () {
           if (true || xhr.readyState == 3) xhr.abort();
         }, xhr.timeout);
       }
@@ -151,7 +152,7 @@ var EventSource = function(url, options) {
       eventsource._xhr = xhr;
     } catch (e) {
       // in an attempt to silence the errors
-      eventsource.dispatchEvent('error', { type: 'error', data: e.message }); // ???
+      eventsource.dispatchEvent("error", { type: "error", data: e.message }); // ???
     }
   }
 
@@ -159,7 +160,7 @@ var EventSource = function(url, options) {
 };
 
 EventSource.prototype = {
-  close: function() {
+  close: function () {
     // closes the connection - disabling the polling
     this.readyState = this.CLOSED;
     clearInterval(this._pollTimer);
@@ -168,27 +169,27 @@ EventSource.prototype = {
   CONNECTING: 0,
   OPEN: 1,
   CLOSED: 2,
-  dispatchEvent: function(type, event) {
-    var handlers = this['_' + type + 'Handlers'];
+  dispatchEvent: function (type, event) {
+    var handlers = this["_" + type + "Handlers"];
     if (handlers) {
       for (var i = 0; i < handlers.length; i++) {
         handlers[i].call(this, event);
       }
     }
 
-    if (this['on' + type]) {
-      this['on' + type].call(this, event);
+    if (this["on" + type]) {
+      this["on" + type].call(this, event);
     }
   },
-  addEventListener: function(type, handler) {
-    if (!this['_' + type + 'Handlers']) {
-      this['_' + type + 'Handlers'] = [];
+  addEventListener: function (type, handler) {
+    if (!this["_" + type + "Handlers"]) {
+      this["_" + type + "Handlers"] = [];
     }
 
-    this['_' + type + 'Handlers'].push(handler);
+    this["_" + type + "Handlers"].push(handler);
   },
-  removeEventListener: function(type, handler) {
-    var handlers = this['_' + type + 'Handlers'];
+  removeEventListener: function (type, handler) {
+    var handlers = this["_" + type + "Handlers"];
     if (!handlers) {
       return;
     }
@@ -203,20 +204,20 @@ EventSource.prototype = {
   onmessage: null,
   onopen: null,
   readyState: 0,
-  URL: '',
+  URL: "",
 };
 
-var MessageEvent = function(data, origin, lastEventId) {
+var MessageEvent = function (data, origin, lastEventId) {
   this.data = data;
   this.origin = origin;
-  this.lastEventId = lastEventId || '';
+  this.lastEventId = lastEventId || "";
 };
 
 MessageEvent.prototype = {
   data: null,
-  type: 'message',
-  lastEventId: '',
-  origin: '',
+  type: "message",
+  lastEventId: "",
+  origin: "",
 };
 
 export default EventSource;

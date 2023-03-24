@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "composite": true,
+    "moduleResolution": "node",
+    "downlevelIteration": true,
+    "declaration": true
+  },
+  "references": [],
+  "exclude": ["dist"],
+  "include": ["./src"]
+}

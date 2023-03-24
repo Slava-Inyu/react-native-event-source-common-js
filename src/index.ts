@@ -1,26 +1,29 @@
-import EventSource from './EventSource'
+// @ts-nocheck
+import EventSource from "./EventSource";
 
 class RNEventSource {
-  constructor(url, options={}) {
-    this.url         = url;
-    this.options     = options;
+  constructor(url, options = {}) {
+    this.url = url;
+    this.options = options;
     this.eventSource = new EventSource(url, options);
-    this.listeners   = [];
+    this.listeners = [];
   }
-  addEventListener (type, listener) {
-    this.eventSource.addEventListener(type, listener)
+  addEventListener(type, listener) {
+    this.eventSource.addEventListener(type, listener);
 
     const remove = () => {
       this.removeListener(type, listener);
-    }
+    };
 
     this.listeners.push({
-      remove: remove, type: type, listener: listener
+      remove: remove,
+      type: type,
+      listener: listener,
     });
 
     return this.listeners[this.listeners.length - 1];
   }
-  removeAllListeners () {
+  removeAllListeners() {
     this.listeners.map((listener) => {
       listener.remove();
     });
@@ -28,7 +31,7 @@ class RNEventSource {
   removeListener(type, listener) {
     this.eventSource.removeEventListener(type, listener);
   }
-  close () {
+  close() {
     this.eventSource.close();
   }
 }
