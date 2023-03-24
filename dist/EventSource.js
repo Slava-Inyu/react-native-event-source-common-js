@@ -62,7 +62,9 @@ var EventSource = function (url, options) {
                     }
                     catch (e) { }
                     // process this.responseText
-                    var parts = responseText.substr(lastIndexProcessed).split("\n"), data = [], i = 0, retry = 0, line = "";
+                    var parts = responseText
+                        .substr(lastIndexProcessed)
+                        .split("\n"), data = [], i = 0, retry = 0, line = "";
                     lastIndexProcessed = responseText.lastIndexOf("\n\n") + 2;
                     // TODO handle 'event' (for buffer name), retry
                     for (; i < parts.length; i++) {
@@ -110,7 +112,7 @@ var EventSource = function (url, options) {
                     }
                 }
             };
-            xhr.onerror = function (e) {
+            xhr.onerror = function (_) {
                 // dispatch error
                 eventsource.readyState = eventsource.CONNECTING;
                 eventsource.dispatchEvent("error", {

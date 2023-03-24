@@ -2,13 +2,13 @@
 import EventSource from "./EventSource";
 
 class RNEventSource {
-  constructor(url, options = {}) {
+  constructor(url: any, options = {}) {
     this.url = url;
     this.options = options;
     this.eventSource = new EventSource(url, options);
     this.listeners = [];
   }
-  addEventListener(type, listener) {
+  addEventListener(type: any, listener: any) {
     this.eventSource.addEventListener(type, listener);
 
     const remove = () => {
@@ -24,11 +24,11 @@ class RNEventSource {
     return this.listeners[this.listeners.length - 1];
   }
   removeAllListeners() {
-    this.listeners.map((listener) => {
+    this.listeners.map((listener: any) => {
       listener.remove();
     });
   }
-  removeListener(type, listener) {
+  removeListener(type: any, listener: any) {
     this.eventSource.removeEventListener(type, listener);
   }
   close() {

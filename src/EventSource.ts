@@ -7,12 +7,12 @@
 
 var reTrim = /^(\s|\u00A0)+|(\s|\u00A0)+$/g;
 
-var EventSource = function (url, options) {
+var EventSource = function (url: any, options: any) {
   var eventsource = this,
     interval = 500, // polling interval
     lastEventId = null,
     lastIndexProcessed = 0,
-    eventType;
+    eventType: any;
 
   if (!url || typeof url != "string") {
     throw new SyntaxError("Not enough arguments");
@@ -24,7 +24,7 @@ var EventSource = function (url, options) {
   this._pollTimer = null;
   this._xhr = null;
 
-  function pollAgain(interval) {
+  function pollAgain(interval: any) {
     eventsource._pollTimer = setTimeout(function () {
       poll.call(eventsource);
     }, interval);
@@ -75,7 +75,9 @@ var EventSource = function (url, options) {
           } catch (e) {}
 
           // process this.responseText
-          var parts = responseText.substr(lastIndexProcessed).split("\n"),
+          var parts = (responseText as any)
+              .substr(lastIndexProcessed)
+              .split("\n"),
             data = [],
             i = 0,
             retry = 0,
@@ -127,7 +129,7 @@ var EventSource = function (url, options) {
         }
       };
 
-      xhr.onerror = function (e) {
+      xhr.onerror = function (_: any) {
         // dispatch error
         eventsource.readyState = eventsource.CONNECTING;
 
@@ -169,7 +171,7 @@ EventSource.prototype = {
   CONNECTING: 0,
   OPEN: 1,
   CLOSED: 2,
-  dispatchEvent: function (type, event) {
+  dispatchEvent: function (type: any, event: any) {
     var handlers = this["_" + type + "Handlers"];
     if (handlers) {
       for (var i = 0; i < handlers.length; i++) {
@@ -181,14 +183,14 @@ EventSource.prototype = {
       this["on" + type].call(this, event);
     }
   },
-  addEventListener: function (type, handler) {
+  addEventListener: function (type: any, handler: any) {
     if (!this["_" + type + "Handlers"]) {
       this["_" + type + "Handlers"] = [];
     }
 
     this["_" + type + "Handlers"].push(handler);
   },
-  removeEventListener: function (type, handler) {
+  removeEventListener: function (type: any, handler: any) {
     var handlers = this["_" + type + "Handlers"];
     if (!handlers) {
       return;
@@ -207,7 +209,7 @@ EventSource.prototype = {
   URL: "",
 };
 
-var MessageEvent = function (data, origin, lastEventId) {
+var MessageEvent = function (data: any, origin: any, lastEventId: any) {
   this.data = data;
   this.origin = origin;
   this.lastEventId = lastEventId || "";
