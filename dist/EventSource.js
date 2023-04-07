@@ -1,11 +1,9 @@
-"use strict";
 // @ts-nocheck
 // EventSource.js
 // Original implementation from
 // https://github.com/remy/polyfills/blob/master/EventSource.js
 //
 // Copyright (c) 2010 Remy Sharp, http://remysharp.com
-Object.defineProperty(exports, "__esModule", { value: true });
 var reTrim = /^(\s|\u00A0)+|(\s|\u00A0)+$/g;
 var EventSource = function (url, options) {
     var eventsource = this, interval = 500, // polling interval
@@ -197,4 +195,4 @@ MessageEvent.prototype = {
     lastEventId: "",
     origin: "",
 };
-exports.default = EventSource;
+export default EventSource;

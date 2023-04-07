@@ -1,13 +1,11 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 // @ts-nocheck
-var EventSource_1 = require("./EventSource");
+import EventSource from "./EventSource";
 var RNEventSource = /** @class */ (function () {
     function RNEventSource(url, options) {
         if (options === void 0) { options = {}; }
         this.url = url;
         this.options = options;
-        this.eventSource = new EventSource_1.default(url, options);
+        this.eventSource = new EventSource(url, options);
         this.listeners = [];
     }
     RNEventSource.prototype.addEventListener = function (type, listener) {
@@ -36,4 +34,4 @@ var RNEventSource = /** @class */ (function () {
     };
     return RNEventSource;
 }());
-exports.default = RNEventSource;
+export default RNEventSource;

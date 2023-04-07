@@ -1,8 +1,7 @@
 {
-  "name": "react-native-event-source-common-js",
+  "name": "react-native-event-source-ts",
   "version": "1.0.0",
   "description": "A react-native component for EventSource: Server-Sent Events for iOS",
-  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -16,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jordanbyron/react-native-event-source"
+    "url": "https://github.com/Slava-Inyu/react-native-event-ts"
   },
   "keywords": [
     "react-native",
@@ -24,7 +23,6 @@
     "event-source",
     "sse"
   ],
-  "author": "Jordan Byron <jordan.byron@gmail.com>",
   "license": "MIT",
   "devDependencies": {
     "rimraf": "^4.4.1",
