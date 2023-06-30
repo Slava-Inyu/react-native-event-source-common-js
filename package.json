@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "clean": "rimraf dist && rimraf tsconfig.tsbuildinfo",
-    "build": "npm run clean && tsc",
+    "build": "npm run clean && babel src --out-dir dist --extensions \".ts\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm run clean && tsc -w"
   },
@@ -25,6 +25,10 @@
   ],
   "license": "MIT",
   "devDependencies": {
+    "@babel/cli": "^7.22.5",
+    "@babel/core": "^7.22.5",
+    "@babel/preset-env": "^7.22.5",
+    "@babel/preset-typescript": "^7.22.5",
     "rimraf": "^4.4.1",
     "typescript": "^5.0.2"
   }
