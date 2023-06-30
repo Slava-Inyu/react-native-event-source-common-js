@@ -1,6 +1,6 @@
 {
   "name": "react-native-event-source-ts",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A react-native component for EventSource: Server-Sent Events for iOS",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -9,7 +9,9 @@
   ],
   "scripts": {
     "clean": "rimraf dist && rimraf tsconfig.tsbuildinfo",
-    "build": "npm run clean && babel src --out-dir dist --extensions \".ts\"",
+    "build": "npm run clean && npm run build:types && npm run build:js",
+    "build:types": "tsc --emitDeclarationOnly",
+    "build:js": "babel src --out-dir dist --extensions \".ts\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm run clean && tsc -w"
   },
